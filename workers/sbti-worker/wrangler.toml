@@ -1,0 +1,14 @@
+name = "sbti-page"
+main = "src/worker.js"
+compatibility_date = "2026-04-10"
+workers_dev = false
+
+routes = [
+  { pattern = "sbti.wenyuanw.me/*", zone_name = "wenyuanw.me" }
+]
+
+[assets]
+directory = "../../sbti"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "none"

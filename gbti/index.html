@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBTI 股民人格测试</title>
+  <style>
+    :root {
+      --bg: #ebeeea;
+      --panel: #ffffff;
+      --text: #1f2a22;
+      --muted: #5f6c63;
+      --line: #d5dbd5;
+      --soft: #eff2ee;
+      --accent: #5f7565;
+      --shadow: 0 10px 24px rgba(48, 72, 56, 0.06);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 14px 48px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .hero {
+      padding: 28px;
+      margin-top: 14px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    .hero h1 {
+      margin-top: 14px;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .hero .sub {
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 15px;
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 12px 18px;
+      transition: .16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 12px 26px rgba(79, 109, 88, 0.22);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .test-wrap,
+    .result-wrap {
+      margin-top: 18px;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .progress {
+      flex: 1;
+      min-width: 220px;
+      height: 10px;
+      border-radius: 999px;
+      background: #eaf1ec;
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #9ab5a3, #4f6d58);
+      transition: width .2s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .question-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #fbfdfb);
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: var(--soft);
+    }
+
+    .question-title {
+      font-size: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      margin-top: 12px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .option {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .option input { margin: 0; }
+
+    .actions-bottom {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .result-top {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: #f8faf8;
+    }
+
+    .poster-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .poster-image {
+      width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      max-height: 300px;
+    }
+
+    .poster-box.no-image .poster-image { display: none; }
+
+    .type-box,
+    .analysis-box,
+    .dim-box,
+    .note-box,
+    .board-card,
+    .reason-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .type-kicker {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .type-name {
+      margin-top: 6px;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+
+    .match {
+      margin-top: 8px;
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .type-subname {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .result-remark {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--soft);
+      color: #324238;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .analysis-box,
+    .dim-box,
+    .note-box {
+      margin-top: 14px;
+    }
+
+    .analysis-box h3,
+    .dim-box h3,
+    .note-box h3 { margin-bottom: 8px; }
+
+    .analysis-box p,
+    .note-box p {
+      color: #324238;
+      line-height: 1.8;
+    }
+
+    .board-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .board-title {
+      font-size: 34px;
+      letter-spacing: .02em;
+      margin-bottom: 8px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: #33443a;
+      border-radius: 999px;
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+
+    .board-list {
+      margin: 0;
+      padding-left: 22px;
+      color: #3b4a40;
+      line-height: 1.9;
+    }
+
+    .board-list li + li {
+      margin-top: 2px;
+    }
+
+    .reason-box {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .reason-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .reason-card {
+      background: #f6f8f6;
+    }
+
+    .reason-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .reason-value {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      line-height: 1.4;
+    }
+
+    .reason-judge {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.8;
+    }
+
+    .dim-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .dim-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fbfdfb;
+    }
+
+    .dim-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .dim-item-name { font-weight: 700; font-size: 14px; }
+    .dim-item-score { color: var(--muted); font-size: 12px; }
+    .dim-item p { color: #45544a; font-size: 13px; line-height: 1.7; margin: 0; }
+
+    .result-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .site-footer {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+
+    .site-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .site-footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 860px) {
+      .result-top { grid-template-columns: 1fr; }
+      .board-grid,
+      .reason-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .shell { padding: 14px 10px 30px; }
+      .hero, .test-wrap, .result-wrap { padding: 14px; }
+      .question-title { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section id="intro" class="screen active">
+      <div class="hero card">
+        <div class="eyebrow">📈 GBTI · 股民人格测试</div>
+        <h1>MBTI 不一定懂你，GBTI 更懂你的仓位。</h1>
+        <p class="sub">
+          这是一个娱乐向股票购买者类型测试。你会被归类为“股神 / 韭菜 / 观望者 / 接盘侠 / 逃顶大师 / 梭哈King”等画像之一。
+          结果仅供娱乐，不构成任何投资建议。
+        </p>
+        <div class="hero-actions">
+          <button id="startBtn" class="btn-primary">开始测试</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="test-wrap card">
+        <div class="topbar">
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="progress-text" id="progressText">0 / 31</div>
+        </div>
+
+        <div id="questionList" class="question-list"></div>
+
+        <div class="actions-bottom">
+          <div id="testHint" class="hint">做完所有题再看结果，别像下单一样冲动。</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button id="backIntroBtn" class="btn-secondary">返回首页</button>
+            <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-wrap card">
+        <div class="result-top">
+          <div id="posterBox" class="poster-box no-image">
+            <img id="posterImage" class="poster-image" alt="类型图片" />
+            <div id="posterCaption">图片占位中，你后续补图即可。</div>
+          </div>
+
+          <div class="type-box">
+            <div id="resultModeKicker" class="type-kicker">你的主类型</div>
+            <div id="resultTypeName" class="type-name">DEFENDER_A（大A守望者）</div>
+            <div id="matchBadge" class="match">匹配度 77%</div>
+            <div id="resultTypeSub" class="type-subname">你更相信规则，而不是故事。</div>
+          </div>
+        </div>
+
+        <div class="analysis-box">
+          <h3>该类型的简单解读</h3>
+          <p id="resultDesc"></p>
+          <div id="resultRemark" class="result-remark">备注：你更相信规则，而不是故事；更相信节奏，而不是情绪。</div>
+        </div>
+
+        <div class="board-grid">
+          <div class="board-card">
+            <h3>人格标签</h3>
+            <div id="tagList" class="chip-list"></div>
+          </div>
+
+          <div class="board-card">
+            <h3>常见场景</h3>
+            <ul id="sceneList" class="board-list"></ul>
+          </div>
+
+          <div class="board-card">
+            <h3>常见口头禅</h3>
+            <ul id="mantraList" class="board-list"></ul>
+          </div>
+
+          <div class="board-card">
+            <h3>友情提示</h3>
+            <ul id="tipList" class="board-list"></ul>
+          </div>
+        </div>
+
+        <div class="reason-box">
+          <h3>本次命中理由</h3>
+          <div class="reason-grid">
+            <div class="reason-card">
+              <div class="reason-label">主导因子</div>
+              <div id="reasonMain" class="reason-value">指数信徒</div>
+            </div>
+            <div class="reason-card">
+              <div class="reason-label">第二标签</div>
+              <div id="reasonSecond" class="reason-value">结构优先</div>
+            </div>
+            <div class="reason-card">
+              <div class="reason-label">第三标签</div>
+              <div id="reasonThird" class="reason-value">防守第一</div>
+            </div>
+            <div class="reason-card">
+              <div class="reason-label">人格判断</div>
+              <div id="reasonJudge" class="reason-judge">A 股的信徒，只买指数，指数的护城河。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dim-box">
+          <h3>十五维度评分</h3>
+          <div id="dimList" class="dim-list"></div>
+        </div>
+
+        <div class="note-box">
+          <h3>友情提示</h3>
+          <p id="funNote">测试仅供娱乐，不构成投资建议；盈亏自负，谨慎决策。</p>
+        </div>
+
+        <div class="result-actions">
+          <button id="restartBtn" class="btn-secondary">重新测试</button>
+          <button id="toTopBtn" class="btn-primary">回到首页</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>
+        页面跳转：
+        <a href="https://sbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">SBTI</a>
+        ·
+        <a href="https://gbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">GBTI</a>
+      </span>
+      <span>
+        GitHub：
+        <a href="https://github.com/wenyuanw/GBTI-test" target="_blank" rel="noopener noreferrer">github.com/wenyuanw/GBTI-test</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    const dimensionMeta = {
+      R1: { name: 'R1 风险承受力', model: '风险模型' },
+      R2: { name: 'R2 回撤耐受力', model: '风险模型' },
+      R3: { name: 'R3 杠杆冲动', model: '风险模型' },
+      T1: { name: 'T1 出手频率', model: '交易节奏模型' },
+      T2: { name: 'T2 持有耐心', model: '交易节奏模型' },
+      T3: { name: 'T3 纪律执行', model: '交易节奏模型' },
+      I1: { name: 'I1 消息依赖度', model: '信息模型' },
+      I2: { name: 'I2 独立研究度', model: '信息模型' },
+      I3: { name: 'I3 题材追逐度', model: '信息模型' },
+      M1: { name: 'M1 情绪稳定度', model: '情绪模型' },
+      M2: { name: 'M2 FOMO 强度', model: '情绪模型' },
+      M3: { name: 'M3 止损果断度', model: '情绪模型' },
+      S1: { name: 'S1 仓位管理力', model: '策略模型' },
+      S2: { name: 'S2 复盘习惯', model: '策略模型' },
+      S3: { name: 'S3 规则一致性', model: '策略模型' }
+    };
+
+    const questions = [
+      {
+        id: 'q1', dim: 'R1',
+        text: '账户单日波动超过 3% 时，你通常？',
+        options: [
+          { label: '心跳加速，立刻想减仓。', value: 1 },
+          { label: '有点慌，但还能扛。', value: 2 },
+          { label: '正常波动，先看结构再说。', value: 3 }
+        ]
+      },
+      {
+        id: 'q2', dim: 'R1',
+        text: '面对高波动板块，你更像：',
+        options: [
+          { label: '只看不买，远离心脏骤停。', value: 1 },
+          { label: '小仓位试错一下。', value: 2 },
+          { label: '波动越大越兴奋。', value: 3 }
+        ]
+      },
+      {
+        id: 'q3', dim: 'R2',
+        text: '持仓回撤 15% 时，你会？',
+        options: [
+          { label: '睡不着，想尽快离场。', value: 1 },
+          { label: '边看边等，给点时间。', value: 2 },
+          { label: '若逻辑在，回撤可接受。', value: 3 }
+        ]
+      },
+      {
+        id: 'q4', dim: 'R2',
+        text: '对“浮亏不是亏”这句话，你更接近：',
+        options: [
+          { label: '不同意，亏就是亏。', value: 1 },
+          { label: '看周期和仓位。', value: 2 },
+          { label: '同意，波动是过程。', value: 3 }
+        ]
+      },
+      {
+        id: 'q5', dim: 'R3',
+        text: '你对融资融券/杠杆工具的态度是？',
+        options: [
+          { label: '尽量不用。', value: 1 },
+          { label: '有机会会少量用。', value: 2 },
+          { label: '会，资金效率第一。', value: 3 }
+        ]
+      },
+      {
+        id: 'q6', dim: 'R3',
+        text: '你眼中的“满仓”是：',
+        options: [
+          { label: '风险过高，不常用。', value: 1 },
+          { label: '只在特定机会使用。', value: 2 },
+          { label: '常态，子弹打光才叫上场。', value: 3 }
+        ]
+      },
+      {
+        id: 'q7', dim: 'T1',
+        text: '你的下单频率通常是：',
+        options: [
+          { label: '很少交易，主要观察。', value: 1 },
+          { label: '每周会动几次。', value: 2 },
+          { label: '几乎天天有操作。', value: 3 }
+        ]
+      },
+      {
+        id: 'q8', dim: 'T1',
+        text: '看到盘中异动时，你会：',
+        options: [
+          { label: '记录但不追。', value: 1 },
+          { label: '小仓位试一笔。', value: 2 },
+          { label: '马上上车，先手最重要。', value: 3 }
+        ]
+      },
+      {
+        id: 'q9', dim: 'T2',
+        text: '你更偏好的持仓周期是：',
+        options: [
+          { label: '短线快进快出。', value: 1 },
+          { label: '中线，几周到几月。', value: 2 },
+          { label: '长线，愿意长期持有。', value: 3 }
+        ]
+      },
+      {
+        id: 'q10', dim: 'T2',
+        text: '买入后涨得不快，你一般会：',
+        options: [
+          { label: '很快换标的。', value: 1 },
+          { label: '再观察几天。', value: 2 },
+          { label: '只要逻辑没坏就耐心拿。', value: 3 }
+        ]
+      },
+      {
+        id: 'q11', dim: 'T3',
+        text: '你是否严格执行交易计划？',
+        options: [
+          { label: '常被盘中情绪打断。', value: 1 },
+          { label: '大部分时间能执行。', value: 2 },
+          { label: '计划一旦写下就照做。', value: 3 }
+        ]
+      },
+      {
+        id: 'q12', dim: 'T3',
+        text: '预设卖点到了但群里还在喊“继续冲”，你会？',
+        options: [
+          { label: '容易被带节奏，先等等。', value: 1 },
+          { label: '犹豫后执行一部分。', value: 2 },
+          { label: '按策略执行，不看情绪。', value: 3 }
+        ]
+      },
+      {
+        id: 'q13', dim: 'I1',
+        text: '你做决策时，对财经新闻/群消息的依赖程度：',
+        options: [
+          { label: '不太依赖。', value: 1 },
+          { label: '会参考。', value: 2 },
+          { label: '非常依赖，实时盯消息。', value: 3 }
+        ]
+      },
+      {
+        id: 'q14', dim: 'I1',
+        text: '看到“突发利好”时你的第一反应：',
+        options: [
+          { label: '先验证，不急下单。', value: 1 },
+          { label: '看盘口再定。', value: 2 },
+          { label: '先买再说，慢了就没了。', value: 3 }
+        ]
+      },
+      {
+        id: 'q15', dim: 'I2',
+        text: '买入前你会自己看财报、估值或行业资料吗？',
+        options: [
+          { label: '很少，主要听别人观点。', value: 1 },
+          { label: '偶尔会看重点。', value: 2 },
+          { label: '会，形成自己的判断。', value: 3 }
+        ]
+      },
+      {
+        id: 'q16', dim: 'I2',
+        text: '面对大V观点与你判断冲突时，你通常：',
+        options: [
+          { label: '倾向跟随大V。', value: 1 },
+          { label: '会重新比对。', value: 2 },
+          { label: '以自己体系为主。', value: 3 }
+        ]
+      },
+      {
+        id: 'q17', dim: 'I3',
+        text: '你对“热门题材”的态度是：',
+        options: [
+          { label: '尽量回避，怕接最后一棒。', value: 1 },
+          { label: '看节奏参与一部分。', value: 2 },
+          { label: '有热度就想上车。', value: 3 }
+        ]
+      },
+      {
+        id: 'q18', dim: 'I3',
+        text: '当新概念在社媒刷屏时，你会：',
+        options: [
+          { label: '先冷静几天。', value: 1 },
+          { label: '观察量价再说。', value: 2 },
+          { label: '马上找龙头标的。', value: 3 }
+        ]
+      },
+      {
+        id: 'q19', dim: 'M1',
+        text: '连续两天亏损后，你的状态更像：',
+        options: [
+          { label: '情绪明显受影响。', value: 1 },
+          { label: '会烦，但能控制。', value: 2 },
+          { label: '照流程复盘，不情绪化。', value: 3 }
+        ]
+      },
+      {
+        id: 'q20', dim: 'M1',
+        text: '盘中剧烈波动时，你能否按计划执行？',
+        options: [
+          { label: '经常临场变卦。', value: 1 },
+          { label: '偶尔会受影响。', value: 2 },
+          { label: '大体稳定，不乱改。', value: 3 }
+        ]
+      },
+      {
+        id: 'q21', dim: 'M2',
+        text: '看到别人晒收益，你会：',
+        options: [
+          { label: '基本无感。', value: 1 },
+          { label: '会有点心动。', value: 2 },
+          { label: '立刻想找机会追上。', value: 3 }
+        ]
+      },
+      {
+        id: 'q22', dim: 'M2',
+        text: '错过一段上涨后，你通常：',
+        options: [
+          { label: '接受错过，等下一次。', value: 1 },
+          { label: '纠结一下再决定。', value: 2 },
+          { label: '追，怕彻底踏空。', value: 3 }
+        ]
+      },
+      {
+        id: 'q23', dim: 'M3',
+        text: '触发止损线后，你通常：',
+        options: [
+          { label: '很难下手止损。', value: 1 },
+          { label: '分批处理。', value: 2 },
+          { label: '果断执行，不恋战。', value: 3 }
+        ]
+      },
+      {
+        id: 'q24', dim: 'M3',
+        text: '你对“扛一扛就回本”的看法：',
+        options: [
+          { label: '经常这么做。', value: 1 },
+          { label: '看标的质量。', value: 2 },
+          { label: '不赌回本，先控风险。', value: 3 }
+        ]
+      },
+      {
+        id: 'q25', dim: 'S1',
+        text: '你通常怎么分配仓位？',
+        options: [
+          { label: '看感觉，一把梭。', value: 1 },
+          { label: '会做大致分配。', value: 2 },
+          { label: '有明确仓位与风险上限。', value: 3 }
+        ]
+      },
+      {
+        id: 'q26', dim: 'S1',
+        text: '同一行业连续上涨时，你会：',
+        options: [
+          { label: '集中重仓单一票。', value: 1 },
+          { label: '适度集中。', value: 2 },
+          { label: '分散并控制单票风险。', value: 3 }
+        ]
+      },
+      {
+        id: 'q27', dim: 'S2',
+        text: '你会固定复盘交易吗？',
+        options: [
+          { label: '很少，过了就过了。', value: 1 },
+          { label: '偶尔复盘。', value: 2 },
+          { label: '有固定复盘节奏。', value: 3 }
+        ]
+      },
+      {
+        id: 'q28', dim: 'S2',
+        text: '你是否记录自己的买卖理由和复盘结论？',
+        options: [
+          { label: '基本不记。', value: 1 },
+          { label: '偶尔记。', value: 2 },
+          { label: '持续记录并回看。', value: 3 }
+        ]
+      },
+      {
+        id: 'q29', dim: 'S3',
+        text: '你有成体系的交易规则吗？',
+        options: [
+          { label: '没有，凭盘感。', value: 1 },
+          { label: '有一点框架。', value: 2 },
+          { label: '有稳定规则并长期执行。', value: 3 }
+        ]
+      },
+      {
+        id: 'q30', dim: 'S3',
+        text: '市场风格切换时，你会：',
+        options: [
+          { label: '追着情绪跑，规则经常变。', value: 1 },
+          { label: '局部调整策略。', value: 2 },
+          { label: '在框架内调整，不破底层规则。', value: 3 }
+        ]
+      }
+    ];
+
+    const specialQuestions = [
+      {
+        id: 'margin_gate_q1',
+        special: true,
+        kind: 'margin_gate',
+        text: '如果你非常看好某次行情，你会怎么配仓？',
+        options: [
+          { label: '继续按计划分仓，不上头。', value: 1 },
+          { label: '提高仓位，但不加杠杆。', value: 2 },
+          { label: '满仓，必要时加杠杆。', value: 3 }
+        ]
+      },
+      {
+        id: 'margin_gate_q2',
+        special: true,
+        kind: 'all_in_trigger',
+        text: '你对“梭哈”最真实的看法是？',
+        options: [
+          { label: '偶尔调侃，不会真干。', value: 1 },
+          { label: '行情对了就该重拳出击。', value: 2 }
+        ]
+      }
+    ];
+
+    const TYPE_LIBRARY = {
+      GURU: {
+        code: 'GURU',
+        cn: '股神',
+        intro: '你不是在看盘，你在读市场的呼吸。',
+        desc: '你兼顾体系、纪律和情绪稳定，能在热闹里保持清醒。你不迷信神话，也不轻视风险，属于“慢慢赢、长期赢”的那类人。'
+      },
+      LEEK: {
+        code: 'LEEK',
+        cn: '韭菜',
+        intro: '你不是菜，只是太容易相信“最后一棒不会是我”。',
+        desc: '你常在情绪最热时进场，在波动最剧烈时失去节奏。只要把仓位和止损先做对，你会比现在稳定很多。'
+      },
+      WATCHER: {
+        code: 'WATCHER',
+        cn: '观望者',
+        intro: '你最擅长的不是下单，而是等风来。',
+        desc: '你对风险敏感，耐心很好，通常不会乱追。短板是容易错过机会，建议把“观望”升级为“有条件的计划等待”。'
+      },
+      JEEP_MAN: {
+        code: 'JEEP_MAN',
+        cn: '接盘侠',
+        intro: '你总是能在最热闹的时候，买到最贵的票。',
+        desc: '你对热点与情绪变化非常敏感，但容易在右侧末端冲进去。若能先定义入场条件，再谈勇敢，胜率会明显提升。'
+      },
+      TD_MASTER: {
+        code: 'TD_MASTER',
+        cn: '逃顶大师',
+        intro: '你也许吃不到最后一口，但你总能活到下一轮。',
+        desc: '你更看重兑现和风险回收，执行力强，撤退速度快。偶尔会卖飞，但在长期账户曲线里，这往往是优点。'
+      },
+      TEN_JQKA: {
+        code: 'TEN_JQKA',
+        cn: '梭哈King',
+        intro: '你的仓位不是数字，是态度。',
+        desc: '你相信高赔率机会要重仓拿下，波动对你来说只是背景音乐。高收益与高回撤都可能被你放大，控制极端风险是关键。'
+      },
+      DEFENDER_A: {
+        code: 'DEFENDER_A',
+        cn: '大A守望者',
+        intro: '先看结构，再谈故事。',
+        desc: '你偏好规则、节奏和大局判断，不急着追涨，更擅长在可理解的框架内做决策。你可能不花哨，但通常更稳。'
+      },
+      JUICY_WONDER: {
+        code: 'JUICY_WONDER',
+        cn: '主力妄想者',
+        intro: '你每天都在破解“主力意图密码”。',
+        desc: '你对盘口细节和情绪故事非常敏感，想象力极强。优势是观察细腻，风险是过度解读，建议多引入可验证信号。'
+      },
+      DIP_HUNTER: {
+        code: 'DIP_HUNTER',
+        cn: '抄底猎手',
+        intro: '别人恐慌时，你开始找尺子量位置。',
+        desc: '你对估值和风险收益比有直觉，偏好在回调里布局。若配合严格分批与止损机制，你的优势会更稳定释放。'
+      },
+      CHASER: {
+        code: 'CHASER',
+        cn: '追高勇士',
+        intro: '趋势不等人，你也不等。',
+        desc: '你重视速度与先手，适合有纪律的趋势跟随。若没有风控边界，追高会很快变成接力，务必把退出条件前置。'
+      },
+      SWING_PRO: {
+        code: 'SWING_PRO',
+        cn: '波段手',
+        intro: '你不执着于最低点和最高点，你只拿中间那段。',
+        desc: '你擅长在节奏中切换仓位，不盲目恋战。相比极端预测，你更重视可执行与可复盘，这是一种成熟优势。'
+      },
+      VALUE_GUARD: {
+        code: 'VALUE_GUARD',
+        cn: '价值派',
+        intro: '喧嚣归喧嚣，估值仍是锚。',
+        desc: '你偏好基本面与长期逻辑，不容易被短期情绪带偏。短板是节奏较慢，若能结合阶段性风险控制，会更完整。'
+      },
+      ETF_BELIEVER: {
+        code: 'ETF_BELIEVER',
+        cn: '指数信徒',
+        intro: '你买的是市场，不是神话。',
+        desc: '你强调分散、纪律和长期主义，愿意把复杂问题交给规则。看起来不刺激，但这是很多人难以坚持的正确。'
+      },
+      STOPLOSS_KNIGHT: {
+        code: 'STOPLOSS_KNIGHT',
+        cn: '止损骑士',
+        intro: '你知道，活着比一笔胜负更重要。',
+        desc: '你对回撤和失误高度敏感，能快速执行风险控制。偶尔会出现“假突破洗出”，但总体对账户保护很有效。'
+      },
+      NEWS_TRADER: {
+        code: 'NEWS_TRADER',
+        cn: '消息面战士',
+        intro: '你活在信息流最前线。',
+        desc: '你对新闻与政策变化反应快，善于捕捉短期情绪窗口。关键在于把“快”变成“可验证”，否则容易噪音过载。'
+      },
+      GRID_MONK: {
+        code: 'GRID_MONK',
+        cn: '网格禅师',
+        intro: '你不猜方向，你管理波动。',
+        desc: '你追求策略稳定和资金效率，面对震荡市通常更从容。只要控制极端单边风险，这类风格有较高生存能力。'
+      }
+    };
+
+    const TYPE_IMAGES = {
+      GURU: './image/GURU.png',
+      LEEK: './image/LEEK.png',
+      WATCHER: './image/WATCHER.png',
+      JEEP_MAN: './image/JEEP_MAN.png',
+      TD_MASTER: './image/TD_MASTER.png',
+      TEN_JQKA: './image/TEN_JQKA.png',
+      DEFENDER_A: './image/DEFENDER_A.png',
+      JUICY_WONDER: './image/JUICY_WONDER.png',
+      DIP_HUNTER: './image/DIP_HUNTER.png',
+      CHASER: './image/CHASER.png',
+      SWING_PRO: './image/SWING_PRO.png',
+      VALUE_GUARD: './image/VALUE_GUARD.png',
+      ETF_BELIEVER: './image/ETF_BELIEVER.png',
+      STOPLOSS_KNIGHT: './image/STOPLOSS_KNIGHT.png',
+      NEWS_TRADER: './image/NEWS_TRADER.png',
+      GRID_MONK: './image/GRID_MONK.png'
+    };
+
+    const TYPE_PROFILES = {
+      GURU: {
+        remark: '备注：你更像交易系统的驾驶员，而不是情绪的乘客。',
+        tags: ['体系交易', '风险优先', '节奏感强', '复盘驱动'],
+        scenes: ['别人讨论热点，你在看仓位热力图。', '行情剧烈波动时，你优先检查计划偏差。', '你不急着证明自己，只在确定性时加码。'],
+        mantras: ['先活下来，再谈收益。', '没有风控的胜利都是借来的。', '系统外的钱，不赚。'],
+        tips: ['保持优势，不要追求每一笔都正确。', '在顺风期也要降低主观膨胀。', '定期回看失误样本。'],
+        reasons: { main: '系统优势', second: '纪律执行', third: '风险控制', judge: '你像一个有框架的交易员，重胜率也重回撤管理。' }
+      },
+      LEEK: {
+        remark: '备注：你不缺勇气，缺的是“先想退出，再谈买入”。',
+        tags: ['情绪驱动', '容易追涨', '计划薄弱', '波动敏感'],
+        scenes: ['看到涨停连板，手已经在下单键上。', '回撤后常在“扛一扛”与“割肉”间摇摆。', '复盘时会说：下次一定更理性。'],
+        mantras: ['这次应该不一样。', '再等等，万一拉起来呢。', '我就看最后一眼。'],
+        tips: ['每笔交易先写止损位。', '把单票仓位控制在可承受范围。', '减少临盘追单次数。'],
+        reasons: { main: '情绪参与', second: '止损犹豫', third: '仓位失衡', judge: '你有行动力，但容易被市场节奏反向带走。' }
+      },
+      WATCHER: {
+        remark: '备注：你的谨慎是优点，但“永远等待”也是一种风险。',
+        tags: ['稳健防守', '耐心观察', '风险敏感', '低频交易'],
+        scenes: ['群里很热闹，你在清单里删标的。', '你总能看到风险点，也经常错过起涨点。', '大波动日，你操作最少。'],
+        mantras: ['再等一根确认。', '先别急，市场得先稳。', '错过比做错好。'],
+        tips: ['给自己设置“可执行触发条件”。', '允许小仓位试错，替代完全空仓。', '把等待转化为计划。'],
+        reasons: { main: '防守倾向', second: '耐心持仓', third: '规则一致', judge: '你更擅长规避大坑，进攻时机需要再果断一点。' }
+      },
+      JEEP_MAN: {
+        remark: '备注：你总是在最热的时候出现，建议在最冷时做计划。',
+        tags: ['热点敏感', '右侧冲动', '节奏偏快', '回撤被动'],
+        scenes: ['热点刷屏后，你迅速找同板块标的。', '高位震荡时容易犹豫不决。', '经常买到“最后一段最猛的上涨”。'],
+        mantras: ['先上车再说。', '这次可能还没结束。', '不冲就没机会了。'],
+        tips: ['限制追高仓位比例。', '设定“高位不加仓”规则。', '用分批止盈替代一次性赌顶。'],
+        reasons: { main: '题材追逐', second: 'FOMO偏高', third: '执行波动', judge: '你反应很快，但要避免成为情绪最后接力者。' }
+      },
+      TD_MASTER: {
+        remark: '备注：你可能卖飞，但也常常躲开大回撤。',
+        tags: ['止盈果断', '回撤厌恶', '纪律较强', '生存优先'],
+        scenes: ['大涨后你先减仓，而不是庆祝。', '别人争论还能涨多高，你在看兑现位置。', '你愿意少赚一点换确定性。'],
+        mantras: ['袋袋平安最重要。', '该走就走，不恋战。', '利润先落地。'],
+        tips: ['分层止盈，避免一次卖空。', '对强趋势保留观察仓。', '减少“卖飞后追高”的反向操作。'],
+        reasons: { main: '止盈执行', second: '风控意识', third: '情绪稳定', judge: '你把风险回收放在前面，账户曲线更容易稳。' }
+      },
+      TEN_JQKA: {
+        remark: '备注：你赌的是赔率，不是情绪，但赔率永远带着波动税。',
+        tags: ['重仓冲锋', '高弹性偏好', '极致进攻', '回撤放大'],
+        scenes: ['确定一波机会后，仓位迅速拉满。', '收益和回撤都比同伴更夸张。', '你常说“轻仓赚不到认知内的钱”。'],
+        mantras: ['要么不做，要做就重仓。', '赔率够高就值得。', '机会来了别怂。'],
+        tips: ['设置单日最大亏损阈值。', '避免高杠杆叠加单一方向。', '胜率不高时主动降档。'],
+        reasons: { main: '仓位激进', second: '风险偏好', third: '出手频繁', judge: '你靠进攻创造弹性，先把下行边界画清楚。' }
+      },
+      DEFENDER_A: {
+        remark: '备注：你更相信规则，而不是故事；更相信大盘，而不是嘴炮。',
+        tags: ['指数信徒', '结构思维', '稳健防守', '大盘优先'],
+        scenes: ['别人聊题材，你在看指数斜率。', '你不太追涨，但很会等节奏。', '买入前先问一句“环境配不配”。'],
+        mantras: ['先看指数。', '别急，市场得先稳。', '护城河不是嘴上说的。'],
+        tips: ['别让防守变成永久不出手。', '耐心是优势，行动也要跟上。', '明确进攻条件。'],
+        reasons: { main: '指数信徒', second: '结构优先', third: '防守第一', judge: 'A股的信徒，只买指数，指数的护城河。' }
+      },
+      JUICY_WONDER: {
+        remark: '备注：你对细节很敏锐，别让想象跑在证据前面。',
+        tags: ['盘口解读', '故事敏感', '高参与感', '信号过载'],
+        scenes: ['你能从盘口里看出很多“暗号”。', '热点一动你就开始推演剧本。', '常在消息和图形之间高速切换。'],
+        mantras: ['这像主力试盘。', '这个量不简单。', '背后一定有逻辑。'],
+        tips: ['每个判断都配一个反证条件。', '降低纯叙事仓位占比。', '用数据验证直觉。'],
+        reasons: { main: '信号敏感', second: '消息依赖', third: '题材关注', judge: '你对市场细节嗅觉灵敏，需提升可验证性。' }
+      },
+      DIP_HUNTER: {
+        remark: '备注：你喜欢在恐慌中找价值，记得给自己留子弹。',
+        tags: ['逆向布局', '估值敏感', '分批买入', '耐心等待'],
+        scenes: ['下跌日你更忙，开始筛选“错杀”标的。', '你倾向左侧分批，而不是一次性梭哈。', '别人害怕时，你在做价格清单。'],
+        mantras: ['跌出来的机会更真实。', '买点比故事重要。', '分批才有回旋。'],
+        tips: ['先确认趋势是否止稳。', '控制补仓节奏，避免越跌越重。', '给每次抄底设失效条件。'],
+        reasons: { main: '逆向思维', second: '估值锚定', third: '仓位分层', judge: '你擅长在回调里找赔率，关键是别和趋势硬刚。' }
+      },
+      CHASER: {
+        remark: '备注：你擅长抓速度，但速度必须配刹车。',
+        tags: ['趋势追随', '右侧进攻', '节奏敏捷', '情绪易热'],
+        scenes: ['突破出现时你反应很快。', '你愿意为趋势付溢价。', '回落阶段若无预案会比较被动。'],
+        mantras: ['趋势就是朋友。', '慢一步就没肉了。', '先上车再管理风险。'],
+        tips: ['追高仓位分级，不满仓第一笔。', '把“失败追涨”标准化止损。', '减少连续追单。'],
+        reasons: { main: '追随趋势', second: '出手速度', third: 'FOMO偏高', judge: '你抓趋势能力突出，补齐风控后会更强。' }
+      },
+      SWING_PRO: {
+        remark: '备注：你不猜绝对顶底，专注可执行的中段利润。',
+        tags: ['节奏切换', '仓位机动', '复盘驱动', '进退有据'],
+        scenes: ['你更在意波段结构而非单日涨跌。', '趋势转弱会主动降仓。', '震荡区间内会做差价。'],
+        mantras: ['吃中段就够了。', '宁可少赚，不乱赌。', '节奏比观点重要。'],
+        tips: ['延续复盘记录优势。', '提升极端行情应急预案。', '避免频繁反手造成摩擦。'],
+        reasons: { main: '波段思维', second: '执行稳定', third: '复盘习惯', judge: '你属于“会打节奏”的选手，长期胜在稳定。' }
+      },
+      VALUE_GUARD: {
+        remark: '备注：你重逻辑和估值，建议补上节奏上的进出纪律。',
+        tags: ['基本面优先', '长期主义', '估值锚', '抗噪能力'],
+        scenes: ['你看报表比看盘口更久。', '短期波动不容易动摇你。', '你常在低估区域耐心布局。'],
+        mantras: ['价格终会回归价值。', '买公司，不是买K线。', '慢就是快。'],
+        tips: ['给长线仓位也设风险阈值。', '避免在基本面未确认时死扛。', '增加周期切换预案。'],
+        reasons: { main: '估值导向', second: '长期持有', third: '独立研究', judge: '你更像资产配置型选手，适合慢变量策略。' }
+      },
+      ETF_BELIEVER: {
+        remark: '备注：你相信分散与纪律，波动交给时间处理。',
+        tags: ['指数定投', '分散配置', '低噪音', '长期复利'],
+        scenes: ['你偏爱宽基和行业ETF，不迷恋个股神话。', '波动日你更关注再平衡机会。', '你把复杂市场简化为规则执行。'],
+        mantras: ['买市场，不猜神。', '分散就是护城河。', '复利靠纪律。'],
+        tips: ['继续坚持长期框架。', '定期检查资产相关性。', '避免过度频繁调仓。'],
+        reasons: { main: '分散优先', second: '风险控制', third: '规则一致', judge: '你把交易做成了工程化执行，稳定性很高。' }
+      },
+      STOPLOSS_KNIGHT: {
+        remark: '备注：你知道认错成本低，拖延成本高。',
+        tags: ['止损坚决', '回撤控制', '风险敏锐', '执行优先'],
+        scenes: ['触发风控线后，你不会和市场争辩。', '亏损单处理速度快于多数人。', '你宁愿错过，也不愿深套。'],
+        mantras: ['先止损，再复盘。', '市场永远是对的。', '小亏是门票。'],
+        tips: ['减少过紧止损带来的噪音交易。', '把止损与仓位联动设置。', '在强趋势中保留弹性。'],
+        reasons: { main: '止损执行', second: '风险敏感', third: '纪律稳定', judge: '你在控制损失方面很优秀，盈利端可再提效。' }
+      },
+      NEWS_TRADER: {
+        remark: '备注：你速度很快，下一步是区分“信息”与“噪音”。',
+        tags: ['消息驱动', '反应迅速', '短线偏好', '窗口捕捉'],
+        scenes: ['政策新闻出来后你会迅速联想受益链条。', '你比多数人更早关注事件催化。', '在无新催化时容易感到无聊。'],
+        mantras: ['消息先手最值钱。', '题材要看催化强度。', '快，就是优势。'],
+        tips: ['建立消息分级机制。', '只做可验证、可跟踪的事件。', '控制“纯消息票”仓位。'],
+        reasons: { main: '消息敏感', second: '出手速度', third: '题材参与', judge: '你擅长事件交易，关键是提高噪音过滤能力。' }
+      },
+      GRID_MONK: {
+        remark: '备注：你更像波动管理者，而不是方向赌徒。',
+        tags: ['网格策略', '机械执行', '震荡友好', '情绪低敏'],
+        scenes: ['你把行情拆成区间，而不是非涨即跌。', '震荡市里你往往更有耐心。', '你重视执行一致性胜过观点正确性。'],
+        mantras: ['波动就是燃料。', '按格子走，不猜方向。', '执行比预测重要。'],
+        tips: ['单边极端行情要有熔断方案。', '动态调整网格间距。', '注意流动性与滑点成本。'],
+        reasons: { main: '策略机械化', second: '执行一致', third: '情绪稳定', judge: '你适合系统化策略，在震荡环境优势明显。' }
+      }
+    };
+
+    const NORMAL_TYPES = [
+      { code: 'GURU', pattern: 'HHH-HMH-HHH-HHH-HHH' },
+      { code: 'LEEK', pattern: 'LLM-HLL-LMH-LLL-LLL' },
+      { code: 'WATCHER', pattern: 'LHH-LLH-MMH-HHM-HHH' },
+      { code: 'JEEP_MAN', pattern: 'MLL-HLL-MLH-LLL-LLM' },
+      { code: 'TD_MASTER', pattern: 'HMH-HMH-HMM-HHH-HHM' },
+      { code: 'TEN_JQKA', pattern: 'HLL-HLL-LLH-LLL-LLL' },
+      { code: 'DEFENDER_A', pattern: 'LHH-LLH-MHH-HHH-HHH' },
+      { code: 'JUICY_WONDER', pattern: 'MML-HML-LLH-LLH-MLL' },
+      { code: 'DIP_HUNTER', pattern: 'MHM-MMH-MHH-HMH-HHM' },
+      { code: 'CHASER', pattern: 'MLL-HLL-MLH-LLL-MLL' },
+      { code: 'SWING_PRO', pattern: 'MHM-HMM-HHH-HHM-HHM' },
+      { code: 'VALUE_GUARD', pattern: 'LHH-LHH-HHH-HHH-HHH' },
+      { code: 'ETF_BELIEVER', pattern: 'LHH-LLH-MHH-HHH-HHH' },
+      { code: 'STOPLOSS_KNIGHT', pattern: 'MHH-MMH-HHM-HHH-HHH' },
+      { code: 'NEWS_TRADER', pattern: 'MML-HML-HLH-MLM-MLM' },
+      { code: 'GRID_MONK', pattern: 'LMH-MHH-MHM-HHH-HHH' }
+    ];
+
+    const DIM_EXPLANATIONS = {
+      R1: {
+        L: '对波动较敏感，更偏向防守型参与。',
+        M: '风险接受度适中，会在机会与安全间平衡。',
+        H: '对波动容忍度较高，更愿意承担风险换收益。'
+      },
+      R2: {
+        L: '回撤会显著影响操作，倾向快速离场。',
+        M: '能承受一定回撤，但需要边走边看。',
+        H: '只要逻辑未破，能承受阶段性回撤。'
+      },
+      R3: {
+        L: '偏好低杠杆或无杠杆，重视账户安全。',
+        M: '在特定时机会考虑提升风险暴露。',
+        H: '更偏爱高弹性仓位，收益和风险都放大。'
+      },
+      T1: {
+        L: '交易频率偏低，出手较谨慎。',
+        M: '交易节奏适中，机会来时会行动。',
+        H: '交易节奏较快，重视时机与效率。'
+      },
+      T2: {
+        L: '偏短线思维，不爱长时间持有。',
+        M: '持仓周期可长可短，灵活为主。',
+        H: '持有耐心较强，偏中长期思考。'
+      },
+      T3: {
+        L: '容易受盘中情绪影响，执行波动较大。',
+        M: '大体执行计划，但偶尔会临场调整。',
+        H: '纪律执行较强，能按系统推进。'
+      },
+      I1: {
+        L: '不依赖消息驱动，更重视结构验证。',
+        M: '把消息当辅助，不做唯一依据。',
+        H: '对消息面高度敏感，反应速度快。'
+      },
+      I2: {
+        L: '更依赖外部观点，独立研究较少。',
+        M: '有一定独立判断，但不总是深入。',
+        H: '独立研究能力较强，形成自有框架。'
+      },
+      I3: {
+        L: '较少追逐热点，更偏稳健标的。',
+        M: '会关注题材，但不过度沉迷。',
+        H: '对题材热度反应快，偏右侧参与。'
+      },
+      M1: {
+        L: '情绪容易受盈亏影响，波动较明显。',
+        M: '多数时候能稳住，偶尔受扰动。',
+        H: '情绪稳定性较好，能相对客观决策。'
+      },
+      M2: {
+        L: '较少因他人收益而冲动操作。',
+        M: '会有踏空焦虑，但可自我调节。',
+        H: 'FOMO 明显，容易被行情节奏牵引。'
+      },
+      M3: {
+        L: '止损执行困难，容易拖延。',
+        M: '止损执行一般，常做折中处理。',
+        H: '止损果断，优先保护本金与节奏。'
+      },
+      S1: {
+        L: '仓位管理随意，容易暴露集中风险。',
+        M: '有基本仓位意识，但规则不够固定。',
+        H: '仓位管理明确，风险敞口可控。'
+      },
+      S2: {
+        L: '复盘频率低，策略迭代较慢。',
+        M: '有复盘习惯，但稳定性一般。',
+        H: '复盘系统化，能持续优化决策。'
+      },
+      S3: {
+        L: '规则弹性过大，容易跟随情绪变动。',
+        M: '有规则框架，执行偶有偏离。',
+        H: '规则一致性强，风格稳定。'
+      }
+    };
+
+    const dimensionOrder = ['R1', 'R2', 'R3', 'T1', 'T2', 'T3', 'I1', 'I2', 'I3', 'M1', 'M2', 'M3', 'S1', 'S2', 'S3'];
+    const ALL_IN_TRIGGER_QUESTION_ID = 'margin_gate_q2';
+
+    function defaultProfile(type) {
+      return {
+        remark: `备注：${type.cn}风格目前采用通用画像，后续可继续细化专属文案。`,
+        tags: ['交易风格', '风险管理', '节奏偏好'],
+        scenes: ['你会根据当下市场结构调整交易动作。', '你对收益和回撤有自己的一套平衡标准。', '你更容易在熟悉的节奏中发挥稳定。'],
+        mantras: ['先想风险，再谈收益。', '计划比情绪更重要。', '一致性是长期优势。'],
+        tips: ['保持复盘，持续迭代策略。', '在顺风期也要控制仓位膨胀。', '把规则写下来并严格执行。'],
+        reasons: {
+          main: '综合画像',
+          second: '风格匹配',
+          third: '规则执行',
+          judge: `系统识别到你与 ${type.cn} 的特征相近，属于该风格的代表画像。`
+        }
+      };
+    }
+
+    function getTypeProfile(type) {
+      return TYPE_PROFILES[type.code] || defaultProfile(type);
+    }
+
+    function renderListById(id, items) {
+      const target = document.getElementById(id);
+      target.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+    }
+
+    function renderTagList(tags) {
+      const target = document.getElementById('tagList');
+      target.innerHTML = tags.map(tag => `<span class="chip">${tag}</span>`).join('');
+    }
+
+    const app = {
+      shuffledQuestions: [],
+      answers: {}
+    };
+
+    const screens = {
+      intro: document.getElementById('intro'),
+      test: document.getElementById('test'),
+      result: document.getElementById('result')
+    };
+
+    const questionList = document.getElementById('questionList');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const submitBtn = document.getElementById('submitBtn');
+    const testHint = document.getElementById('testHint');
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getVisibleQuestions() {
+      const visible = [...app.shuffledQuestions];
+      const gateIndex = visible.findIndex(q => q.id === 'margin_gate_q1');
+      if (gateIndex !== -1 && app.answers.margin_gate_q1 === 3) {
+        visible.splice(gateIndex + 1, 0, specialQuestions[1]);
+      }
+      return visible;
+    }
+
+    function getQuestionMetaLabel(q) {
+      if (q.special) return '补充题';
+      return `${dimensionMeta[q.dim].name} · ${dimensionMeta[q.dim].model}`;
+    }
+
+    function renderQuestions() {
+      const visibleQuestions = getVisibleQuestions();
+      questionList.innerHTML = '';
+
+      visibleQuestions.forEach((q, index) => {
+        const card = document.createElement('article');
+        card.className = 'question';
+        card.innerHTML = `
+          <div class="question-meta">
+            <div class="badge">第 ${index + 1} 题</div>
+            <div>${getQuestionMetaLabel(q)}</div>
+          </div>
+          <div class="question-title">${q.text}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => {
+              const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+              const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+              return `
+                <label class="option">
+                  <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
+                  <strong>${code}</strong>
+                  <div>${opt.label}</div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+        questionList.appendChild(card);
+      });
+
+      questionList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const { name, value } = e.target;
+          app.answers[name] = Number(value);
+
+          if (name === 'margin_gate_q1') {
+            if (Number(value) !== 3) {
+              delete app.answers.margin_gate_q2;
+            }
+            renderQuestions();
+            return;
+          }
+
+          updateProgress();
+        });
+      });
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const visibleQuestions = getVisibleQuestions();
+      const total = visibleQuestions.length;
+      const done = visibleQuestions.filter(q => app.answers[q.id] !== undefined).length;
+      const percent = total ? (done / total) * 100 : 0;
+
+      progressBar.style.width = `${percent}%`;
+      progressText.textContent = `${done} / ${total}`;
+
+      const complete = done === total && total > 0;
+      submitBtn.disabled = !complete;
+      testHint.textContent = complete
+        ? '全部完成。准备查看你的股民画像。'
+        : '做完所有题再看结果，别像下单一样冲动。';
+    }
+
+    function sumToLevel(score) {
+      if (score <= 3) return 'L';
+      if (score === 4) return 'M';
+      return 'H';
+    }
+
+    function levelNum(level) {
+      return { L: 1, M: 2, H: 3 }[level];
+    }
+
+    function parsePattern(pattern) {
+      return pattern.replace(/-/g, '').split('');
+    }
+
+    function getAllInTriggered() {
+      return app.answers[ALL_IN_TRIGGER_QUESTION_ID] === 2;
+    }
+
+    function computeResult() {
+      const rawScores = {};
+      const levels = {};
+
+      Object.keys(dimensionMeta).forEach(dim => {
+        rawScores[dim] = 0;
+      });
+
+      questions.forEach(q => {
+        rawScores[q.dim] += Number(app.answers[q.id] || 0);
+      });
+
+      Object.entries(rawScores).forEach(([dim, score]) => {
+        levels[dim] = sumToLevel(score);
+      });
+
+      const userVector = dimensionOrder.map(dim => levelNum(levels[dim]));
+      const ranked = NORMAL_TYPES.map(type => {
+        const vector = parsePattern(type.pattern).map(levelNum);
+        let distance = 0;
+        let exact = 0;
+        for (let i = 0; i < vector.length; i++) {
+          const diff = Math.abs(userVector[i] - vector[i]);
+          distance += diff;
+          if (diff === 0) exact += 1;
+        }
+        const similarity = Math.max(0, Math.round((1 - distance / 30) * 100));
+        return { ...type, ...TYPE_LIBRARY[type.code], distance, exact, similarity };
+      }).sort((a, b) => {
+        if (a.distance !== b.distance) return a.distance - b.distance;
+        if (b.exact !== a.exact) return b.exact - a.exact;
+        return b.similarity - a.similarity;
+      });
+
+      const bestNormal = ranked[0];
+      const allInTriggered = getAllInTriggered();
+
+      let finalType = bestNormal;
+      let modeKicker = '你的主类型';
+      let badge = `匹配度 ${bestNormal.similarity}% · 精准命中 ${bestNormal.exact}/15 维`;
+      let sub = '维度命中度较高，当前结果可视为你的交易风格画像。';
+      let special = false;
+
+      if (allInTriggered) {
+        finalType = TYPE_LIBRARY.TEN_JQKA;
+        modeKicker = '隐藏人格已激活';
+        badge = '匹配度 100% · 梭哈冲动已接管';
+        sub = '检测到高强度梭哈倾向，系统优先给出 TEN_JQKA 画像。';
+        special = true;
+      } else if (bestNormal.similarity < 55) {
+        finalType = TYPE_LIBRARY.WATCHER;
+        modeKicker = '系统稳健兜底';
+        badge = `标准人格库最高匹配仅 ${bestNormal.similarity}%`;
+        sub = '你的风格较混合，系统先归档为 WATCHER（观望者）。';
+        special = true;
+      }
+
+      return {
+        rawScores,
+        levels,
+        ranked,
+        bestNormal,
+        finalType,
+        modeKicker,
+        badge,
+        sub,
+        special
+      };
+    }
+
+    function renderDimList(result) {
+      const dimList = document.getElementById('dimList');
+      dimList.innerHTML = dimensionOrder.map(dim => {
+        const level = result.levels[dim];
+        const explanation = DIM_EXPLANATIONS[dim][level];
+        return `
+          <div class="dim-item">
+            <div class="dim-item-top">
+              <div class="dim-item-name">${dimensionMeta[dim].name}</div>
+              <div class="dim-item-score">${level} / ${result.rawScores[dim]} 分</div>
+            </div>
+            <p>${explanation}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderResult() {
+      const result = computeResult();
+      const type = result.finalType;
+      const profile = getTypeProfile(type);
+
+      document.getElementById('resultModeKicker').textContent = result.modeKicker;
+      document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+      document.getElementById('matchBadge').textContent = result.badge;
+      document.getElementById('resultTypeSub').textContent = result.sub;
+      document.getElementById('resultDesc').textContent = type.desc;
+      document.getElementById('posterCaption').textContent = type.intro;
+      document.getElementById('resultRemark').textContent = profile.remark;
+      document.getElementById('reasonMain').textContent = profile.reasons.main;
+      document.getElementById('reasonSecond').textContent = profile.reasons.second;
+      document.getElementById('reasonThird').textContent = profile.reasons.third;
+      document.getElementById('reasonJudge').textContent = profile.reasons.judge;
+
+      renderTagList(profile.tags);
+      renderListById('sceneList', profile.scenes);
+      renderListById('mantraList', profile.mantras);
+      renderListById('tipList', profile.tips);
+
+      document.getElementById('funNote').textContent = result.special
+        ? '娱乐结果触发了特殊逻辑，请理性看待。投资有风险，入市需谨慎。'
+        : '本测试仅供娱乐，不构成投资建议。请根据自身风险承受能力进行决策。';
+
+      const posterBox = document.getElementById('posterBox');
+      const posterImage = document.getElementById('posterImage');
+      const imageSrc = TYPE_IMAGES[type.code];
+
+      posterImage.onerror = () => {
+        posterImage.removeAttribute('src');
+        posterBox.classList.add('no-image');
+        document.getElementById('posterCaption').textContent = `占位图：${type.code}.png（待补充）`;
+      };
+
+      if (imageSrc) {
+        posterImage.src = imageSrc;
+        posterImage.alt = `${type.code}（${type.cn}）`;
+        posterBox.classList.remove('no-image');
+      } else {
+        posterImage.removeAttribute('src');
+        posterImage.alt = '';
+        posterBox.classList.add('no-image');
+      }
+
+      renderDimList(result);
+      showScreen('result');
+    }
+
+    function startTest() {
+      app.answers = {};
+      const shuffledRegular = shuffle(questions);
+      const insertIndex = Math.floor(Math.random() * shuffledRegular.length) + 1;
+      app.shuffledQuestions = [
+        ...shuffledRegular.slice(0, insertIndex),
+        specialQuestions[0],
+        ...shuffledRegular.slice(insertIndex)
+      ];
+      renderQuestions();
+      showScreen('test');
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startTest);
+    document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
+    document.getElementById('submitBtn').addEventListener('click', renderResult);
+    document.getElementById('restartBtn').addEventListener('click', startTest);
+    document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+  </script>
+</body>
+</html>
