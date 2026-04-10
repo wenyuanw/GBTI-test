@@ -8,7 +8,10 @@
     "preview": "vite preview --host 0.0.0.0 --port 4173",
     "dev:sbti-worker": "wrangler dev --config workers/sbti-worker/wrangler.toml --port 8787",
     "dev:gbti-worker": "wrangler dev --config workers/gbti-worker/wrangler.toml --port 8788",
-    "dev:all": "sh -c 'pnpm dev & pnpm dev:sbti-worker & pnpm dev:gbti-worker & wait'"
+    "dev:all": "sh -c 'pnpm dev & pnpm dev:sbti-worker & pnpm dev:gbti-worker & wait'",
+    "deploy:sbti": "wrangler deploy --config workers/sbti-worker/wrangler.toml",
+    "deploy:gbti": "wrangler deploy --config workers/gbti-worker/wrangler.toml",
+    "deploy:all": "pnpm deploy:sbti && pnpm deploy:gbti"
   },
   "devDependencies": {
     "vite": "^5.4.8",

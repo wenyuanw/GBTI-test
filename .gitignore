@@ -1,6 +1,12 @@
 # Node dependencies
 node_modules
 
+# Wrangler / Workers local cache
+.wrangler/
+**/.wrangler/
+.dev.vars
+.dev.vars.*
+
 # Logs
 logs
 *.log

@@ -55,3 +55,24 @@ pnpm dev:gbti-worker
 ```bash
 pnpm dev:all
 ```
+
+## 部署（Cloudflare Workers）
+
+先登录 Cloudflare：
+
+```bash
+pnpm exec wrangler login
+```
+
+分别部署：
+
+```bash
+pnpm deploy:sbti
+pnpm deploy:gbti
+```
+
+一键部署两个项目：
+
+```bash
+pnpm deploy:all
+```
