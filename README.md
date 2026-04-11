@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d080f63-53e1-4aa3-9b09-b9b9f97ae559" width="680" style="background: transparent;">
+</p>
+
 # SBTI / GBTI 测试项目
 
 本仓库包含两个测试页面：
