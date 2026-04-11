@@ -8,6 +8,12 @@
   <meta name="keywords" content="GBTI,股民人格测试,股票测试,投资性格测试,交易风格测试,股神,韭菜,接盘侠" />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <link rel="canonical" href="https://gbti.wenyuanw.me/" />
+  <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png" />
+  <link rel="shortcut icon" href="./favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="./favicon/site.webmanifest" />
+  <meta name="theme-color" content="#ebeeea" />
 
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="zh_CN" />
@@ -306,7 +312,7 @@
     .intro-detail-grid {
       margin-top: 14px;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -364,6 +370,29 @@
       font-size: 12px;
       color: #5d6e63;
       letter-spacing: .03em;
+    }
+
+    .intro-statement {
+      margin-top: 12px;
+      padding: 14px 0 6px;
+      border-top: 1px solid #d7dfd8;
+      color: #4e6055;
+    }
+
+    .intro-statement-title {
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: #2b3a31;
+      font-weight: 700;
+    }
+
+    .intro-statement-copy {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.85;
+      color: #5a6c60;
+      max-width: 900px;
     }
 
     .intro-value-grid {
@@ -877,6 +906,7 @@
 
     .reason-card {
       background: #f6f8f6;
+      padding: 12px;
     }
 
     .reason-label {
@@ -886,16 +916,16 @@
     }
 
     .reason-value {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 700;
       letter-spacing: .01em;
-      line-height: 1.4;
+      line-height: 1.3;
     }
 
     .reason-judge {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      line-height: 1.8;
+      line-height: 1.75;
     }
 
     .dim-list {
@@ -1004,6 +1034,16 @@
         justify-content: center;
         text-align: center;
       }
+      .intro-statement {
+        padding-top: 12px;
+      }
+      .intro-statement-title {
+        font-size: 18px;
+      }
+      .intro-statement-copy {
+        font-size: 13px;
+        line-height: 1.8;
+      }
       .hero-home .btn-primary {
         min-width: 210px;
         padding: 14px 22px;
@@ -1025,6 +1065,11 @@
       .poster-type-cn { font-size: clamp(28px, 8vw, 38px); }
       .poster-box { min-height: 240px; }
       .question-title { font-size: 15px; }
+      .reason-box { padding: 14px; }
+      .reason-card { padding: 10px; }
+      .reason-label { font-size: 12px; }
+      .reason-value { font-size: 20px; }
+      .reason-judge { font-size: 12px; }
       .result-actions { justify-content: center; }
       .site-footer {
         padding: 14px 0 8px;
@@ -1072,6 +1117,13 @@
         </div>
       </div>
 
+      <div class="intro-statement">
+        <p class="intro-statement-title">MBTI 不一定懂你，GBTI 更懂你的仓位。</p>
+        <p class="intro-statement-copy">
+          这是一个娱乐向股票购买者类型测试。你会被归类为“股神 / 韭菜 / 观望者 / 接盘侠 / 逃顶大师 / 梭哈King”等画像之一。结果仅供娱乐，不构成任何投资建议。
+        </p>
+      </div>
+
       <div class="intro-detail-grid">
         <article class="detail-card">
           <h3>测试亮点</h3>
@@ -1100,14 +1152,6 @@
           </ul>
         </article>
 
-        <article class="detail-card">
-          <h3>为什么值得晒出来</h3>
-          <ul class="detail-list">
-            <li>结果页为截图分享专门优化</li>
-            <li>风格有梗，适合群聊互动</li>
-            <li>可和朋友互测对比交易人格</li>
-          </ul>
-        </article>
       </div>
 
       <div class="intro-value-grid">
@@ -1161,7 +1205,7 @@
                 <img id="posterImage" class="poster-image" alt="类型图片" />
                 <div class="poster-type">
                   <div id="resultTypeCn" class="poster-type-cn">大A守望者</div>
-                  <div id="resultTypeEn" class="poster-type-en">DEFENDER_A</div>
+                  <div id="resultTypeEn" class="poster-type-en">DEFENDER A</div>
                 </div>
                 <div id="posterCaption">图片占位中，你后续补图即可。</div>
               </div>
@@ -2316,7 +2360,7 @@
 
       document.getElementById('resultModeKicker').textContent = result.modeKicker;
       document.getElementById('resultTypeCn').textContent = type.cn;
-      document.getElementById('resultTypeEn').textContent = type.code;
+      document.getElementById('resultTypeEn').textContent = type.code.replace(/_/g, ' ');
       document.getElementById('matchBadge').textContent = result.badge;
       document.getElementById('resultTypeSub').textContent = result.sub;
       document.getElementById('resultDesc').textContent = type.desc;
