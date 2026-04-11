@@ -47,6 +47,14 @@
       max-width: 980px;
       margin: 0 auto;
       padding: 24px 14px 48px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .shell > section {
+      margin-bottom: 16px;
     }
 
     .card {
@@ -62,6 +70,57 @@
     .hero {
       padding: 28px;
       margin-top: 14px;
+    }
+
+    .hero-home {
+      position: relative;
+      overflow: hidden;
+      padding: 34px 34px 30px;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 22px;
+      background: linear-gradient(135deg, #ffffff 0%, #f6faf6 52%, #edf4ef 100%);
+      border-color: #ced7cf;
+      box-shadow: 0 16px 36px rgba(40, 63, 50, 0.08);
+    }
+
+    .hero-home::before,
+    .hero-home::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-home::before {
+      width: 220px;
+      height: 220px;
+      right: -70px;
+      top: -90px;
+      background: radial-gradient(circle, rgba(126, 161, 136, 0.25), rgba(126, 161, 136, 0));
+    }
+
+    .hero-home::after {
+      width: 180px;
+      height: 180px;
+      left: -70px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(166, 189, 174, 0.18), rgba(166, 189, 174, 0));
+    }
+
+    .hero-home-main,
+    .hero-home-side {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-home .eyebrow {
+      border-color: #d0dbd2;
+      background: rgba(255, 255, 255, 0.8);
+      color: #4b6353;
+      font-weight: 700;
+      letter-spacing: .03em;
     }
 
     .eyebrow {
@@ -89,6 +148,265 @@
       line-height: 1.8;
       font-size: 15px;
       max-width: 760px;
+    }
+
+    .hero-home h1 {
+      margin-top: 16px;
+      font-size: clamp(34px, 5.8vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      max-width: 640px;
+      color: #1d2a22;
+    }
+
+    .hero-home .sub {
+      margin-top: 12px;
+      color: #425248;
+      font-size: 15px;
+      line-height: 1.72;
+      max-width: 520px;
+    }
+
+    .hero-home .hero-actions {
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .hero-trust {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      color: #65786c;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .hero-trust span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-trust span:not(:last-child)::after {
+      content: '·';
+      color: #9aaba0;
+    }
+
+    .hero-home-side {
+      align-self: end;
+      padding-top: 4px;
+    }
+
+    .hero-spotlight {
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .spotlight-image,
+    .spotlight-title,
+    .spotlight-copy {
+      transition: opacity .24s ease, transform .24s ease;
+      will-change: opacity, transform;
+    }
+
+    .hero-spotlight.is-switching .spotlight-image,
+    .hero-spotlight.is-switching .spotlight-title,
+    .hero-spotlight.is-switching .spotlight-copy {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    .spotlight-image-wrap {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+    }
+
+    .spotlight-image {
+      width: 100%;
+      border-radius: 0;
+      display: block;
+      object-fit: contain;
+      aspect-ratio: 365 / 334;
+      background: transparent;
+      filter: drop-shadow(0 12px 18px rgba(66, 93, 74, 0.12));
+    }
+
+    .spotlight-meta {
+      margin-top: 8px;
+    }
+
+    .spotlight-kicker {
+      color: #708378;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .spotlight-title {
+      margin-top: 6px;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #2d3e34;
+      font-weight: 800;
+    }
+
+    .spotlight-copy {
+      margin-top: 6px;
+      color: #5b6e62;
+      line-height: 1.7;
+      font-size: 12px;
+      min-height: calc(1.7em * 2);
+    }
+
+    .spotlight-controls {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .spotlight-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .spotlight-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: 0;
+      background: #c8d4cb;
+      padding: 0;
+      cursor: pointer;
+      transition: .16s ease;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .spotlight-dot.active {
+      width: 16px;
+      background: #6b806f;
+    }
+
+    .spotlight-dot:hover {
+      transform: none;
+      background: #aebeb2;
+    }
+
+    .intro-detail-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .detail-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(46, 68, 54, 0.05);
+    }
+
+    .detail-card h3 {
+      font-size: 16px;
+      margin: 0 0 10px;
+      color: #2a372f;
+    }
+
+    .detail-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 6px;
+      color: #4e5d53;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .detail-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric-item {
+      border: 1px solid #d4ddd5;
+      background: rgba(245, 250, 246, 0.86);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 78px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1;
+      color: #3f5a49;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: #5d6e63;
+      letter-spacing: .03em;
+    }
+
+    .intro-value-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .value-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(46, 68, 54, 0.05);
+    }
+
+    .value-card .icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #d2ddd4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #49604f;
+      background: #f2f7f3;
+      margin-bottom: 8px;
+    }
+
+    .value-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #2a372f;
+    }
+
+    .value-card p {
+      margin: 0;
+      color: #546359;
+      font-size: 14px;
+      line-height: 1.8;
     }
 
     .hero-actions {
@@ -211,6 +529,22 @@
       align-items: center;
       cursor: pointer;
       background: #fff;
+      transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+    }
+
+    .option:hover {
+      border-color: #c5d3c9;
+      background: #fbfefb;
+    }
+
+    .option.selected {
+      border-color: #9fb6a6;
+      background: #eef5f0;
+      box-shadow: inset 0 0 0 1px rgba(111, 141, 121, 0.2);
+    }
+
+    .option.selected strong {
+      color: #3f5a49;
     }
 
     .option input { margin: 0; }
@@ -219,7 +553,7 @@
       margin-top: 18px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
     }
@@ -227,24 +561,66 @@
     .hint {
       color: var(--muted);
       font-size: 13px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .actions-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .result-top {
+      margin-top: 2px;
+    }
+
+    .result-share-card {
+      border: 0;
+      border-radius: 24px;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(43, 64, 51, 0.08);
+    }
+
+    .share-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .share-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+      color: #5e7265;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .share-card-main {
       display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 20px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      background: #f8faf8;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      align-items: stretch;
     }
 
     .poster-box {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: #fff;
-      min-height: 280px;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      min-height: 360px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -256,10 +632,49 @@
 
     .poster-image {
       width: 100%;
-      border-radius: 14px;
-      object-fit: cover;
-      border: 1px solid var(--line);
-      max-height: 300px;
+      border-radius: 10px;
+      object-fit: contain;
+      aspect-ratio: 365 / 334;
+      border: 0;
+      background: transparent;
+    }
+
+    .poster-box.no-image {
+      border: 1px dashed #cdd8ce;
+      border-radius: 12px;
+      padding: 16px;
+      background: #f7fbf7;
+    }
+
+    .poster-box #posterCaption {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #617369;
+    }
+
+    .poster-type {
+      width: 100%;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 6px 0 0;
+      margin-top: 0;
+    }
+
+    .poster-type-cn {
+      font-size: 30px;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: #1f2c24;
+      font-weight: 800;
+    }
+
+    .poster-type-en {
+      margin-top: 5px;
+      font-size: 15px;
+      color: #4d6154;
+      letter-spacing: .06em;
+      font-weight: 700;
     }
 
     .poster-box.no-image .poster-image { display: none; }
@@ -277,43 +692,100 @@
     }
 
     .type-kicker {
-      color: var(--muted);
+      color: #4c6053;
       font-size: 12px;
-    }
-
-    .type-name {
-      margin-top: 6px;
-      font-size: clamp(26px, 4vw, 38px);
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      letter-spacing: .08em;
       font-weight: 700;
+      text-transform: uppercase;
     }
 
     .match {
-      margin-top: 8px;
+      margin-top: 0;
       display: inline-flex;
-      padding: 4px 10px;
+      padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--soft);
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
+      border: 0;
+      background: #eaf3ec;
+      color: #2f4a3a;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .01em;
     }
 
     .type-subname {
-      margin-top: 8px;
-      color: var(--muted);
+      margin-top: 10px;
+      color: #46564d;
+      line-height: 1.85;
+      font-size: 15px;
+    }
+
+    .result-share-card .type-box {
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .share-meta {
+      margin-top: 14px;
+    }
+
+    .share-highlight {
+      margin-top: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .share-tag-wrap {
+      margin-top: 16px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .share-tag-title {
+      font-size: 13px;
+      color: #54675b;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .share-chip-list {
+      margin-top: 0;
+    }
+
+    .share-chip-list .chip {
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 0;
+      background: #edf4ef;
+    }
+
+    .share-remark-label {
+      color: #4f6356;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .share-footnote {
+      margin: 10px 0 0;
+      color: #5d6f63;
+      font-size: 13px;
       line-height: 1.7;
-      font-size: 14px;
     }
 
     .result-remark {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--soft);
+      margin-top: 10px;
+      padding: 2px 0 2px 10px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      border-left: 3px solid #cbd9cf;
       color: #324238;
       line-height: 1.8;
       font-size: 14px;
@@ -327,7 +799,11 @@
 
     .analysis-box h3,
     .dim-box h3,
-    .note-box h3 { margin-bottom: 8px; }
+    .note-box h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
 
     .analysis-box p,
     .note-box p {
@@ -374,6 +850,15 @@
     .board-list li + li {
       margin-top: 2px;
     }
+
+    .copy-list {
+      margin: 0;
+      padding-left: 22px;
+      color: #3f4f44;
+      line-height: 1.9;
+    }
+
+    .copy-list li + li { margin-top: 2px; }
 
     .reason-box {
       margin-top: 14px;
@@ -445,31 +930,66 @@
     }
 
     .site-footer {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fff;
-      color: var(--muted);
+      margin-top: auto;
+      padding: 16px 0 10px;
+      border-top: 1px solid #d2dad3;
+      background: transparent;
+      color: #66796d;
       display: flex;
-      gap: 10px;
+      align-items: center;
       justify-content: space-between;
+      gap: 14px 18px;
       flex-wrap: wrap;
-      font-size: 13px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: #6a7b70;
+      white-space: nowrap;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px 18px;
+      flex-wrap: wrap;
     }
 
     .site-footer a {
-      color: var(--accent);
+      color: #5e6f63;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      transition: .16s ease;
+      font-size: 13px;
     }
 
     .site-footer a:hover {
+      color: #2f3f34;
       text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .footer-sep {
+      color: #9aaba0;
+      font-size: 12px;
     }
 
     @media (max-width: 860px) {
-      .result-top { grid-template-columns: 1fr; }
+      .hero-home {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+      .hero-home-side { align-self: start; }
+      .intro-detail-grid,
+      .intro-value-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .result-share-card { padding: 16px; }
+      .share-card-main { grid-template-columns: 1fr; }
+      .poster-box { min-height: 280px; }
       .board-grid,
       .reason-grid { grid-template-columns: 1fr; }
     }
@@ -477,23 +997,135 @@
     @media (max-width: 600px) {
       .shell { padding: 14px 10px 30px; }
       .hero, .test-wrap, .result-wrap { padding: 14px; }
+      .hero-home h1 { font-size: clamp(30px, 9vw, 42px); }
+      .hero-home .sub { font-size: 15px; }
+      .hero-home .hero-actions { justify-content: center; }
+      .hero-trust {
+        justify-content: center;
+        text-align: center;
+      }
+      .hero-home .btn-primary {
+        min-width: 210px;
+        padding: 14px 22px;
+        font-size: 16px;
+        border-radius: 14px;
+      }
+      .hero-home-side {
+        width: 100%;
+      }
+      .hero-spotlight {
+        width: 100%;
+      }
+      .spotlight-image {
+        max-height: 240px;
+      }
+      .detail-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .intro-detail-grid,
+      .intro-value-grid { grid-template-columns: 1fr; }
+      .poster-type-cn { font-size: clamp(28px, 8vw, 38px); }
+      .poster-box { min-height: 240px; }
       .question-title { font-size: 15px; }
+      .result-actions { justify-content: center; }
+      .site-footer {
+        padding: 14px 0 8px;
+        gap: 10px;
+      }
+      .footer-links {
+        justify-content: flex-start;
+        gap: 6px 14px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="shell">
     <section id="intro" class="screen active">
-      <div class="hero card">
-        <div class="eyebrow">📈 GBTI · 股民人格测试</div>
-        <h1>MBTI 不一定懂你，GBTI 更懂你的仓位。</h1>
-        <p class="sub">
-          这是一个娱乐向股票购买者类型测试。你会被归类为“股神 / 韭菜 / 观望者 / 接盘侠 / 逃顶大师 / 梭哈King”等画像之一。
-          结果仅供娱乐，不构成任何投资建议。
-        </p>
-        <div class="hero-actions">
-          <button id="startBtn" class="btn-primary">开始测试</button>
+      <div class="hero hero-home card">
+        <div class="hero-home-main">
+          <div class="eyebrow">GBTI · 股民人格测试</div>
+          <h1>测一测，你在股市里是「股神」还是「接盘侠」？</h1>
+          <p class="sub">3 分钟快速评估你的交易风格与风险倾向，得到更清晰的投资行为画像。</p>
+          <div class="hero-actions">
+            <button id="startBtn" class="btn-primary">立即开始测试</button>
+          </div>
+          <div class="hero-trust">
+            <span>完全免费</span>
+            <span>离线可用</span>
+            <span>不收集数据</span>
+          </div>
         </div>
+
+        <div class="hero-home-side">
+          <div id="heroSpotlight" class="hero-spotlight">
+            <div class="spotlight-image-wrap">
+              <img id="spotlightImage" class="spotlight-image" src="./image/TEN_JQKA.png" alt="热门人格：梭哈King" />
+            </div>
+            <div class="spotlight-meta">
+              <div class="spotlight-kicker">本周热测人格</div>
+              <div id="spotlightTitle" class="spotlight-title">梭哈King</div>
+              <p id="spotlightCopy" class="spotlight-copy">高进攻型交易风格代表，适合对照查看你的情绪与仓位管理偏好。</p>
+            </div>
+            <div class="spotlight-controls">
+              <div id="spotlightDots" class="spotlight-dots"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-detail-grid">
+        <article class="detail-card">
+          <h3>测试亮点</h3>
+          <div class="detail-metrics">
+            <div class="metric-item">
+              <span class="metric-value">31</span>
+              <span class="metric-label">道高共鸣题目</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-value">15</span>
+              <span class="metric-label">维度立体评估</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-value">2-3</span>
+              <span class="metric-label">分钟拿到结果</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card">
+          <h3>你将获得</h3>
+          <ul class="detail-list">
+            <li>专属股民人格标签与一句话画像</li>
+            <li>十五维度得分，快速识别强弱项</li>
+            <li>主导因子 + 次级标签的命中理由</li>
+          </ul>
+        </article>
+
+        <article class="detail-card">
+          <h3>为什么值得晒出来</h3>
+          <ul class="detail-list">
+            <li>结果页为截图分享专门优化</li>
+            <li>风格有梗，适合群聊互动</li>
+            <li>可和朋友互测对比交易人格</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="intro-value-grid">
+        <article class="value-card">
+          <span class="icon">01</span>
+          <h3>题目接地气</h3>
+          <p>围绕追涨、止损、回撤、消息面等真实场景设计，不是“空泛心理题”。</p>
+        </article>
+        <article class="value-card">
+          <span class="icon">02</span>
+          <h3>结果更有层次</h3>
+          <p>不只给你一个类型名，还会给出维度分布和命中理由，方便你理解自己。</p>
+        </article>
+        <article class="value-card">
+          <span class="icon">03</span>
+          <h3>娱乐但有启发</h3>
+          <p>轻松有梗的同时，帮你识别常见交易习惯，复盘时更容易抓住关键问题。</p>
+        </article>
       </div>
     </section>
 
@@ -508,7 +1140,7 @@
 
         <div class="actions-bottom">
           <div id="testHint" class="hint">做完所有题再看结果，别像下单一样冲动。</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div class="actions-btns">
             <button id="backIntroBtn" class="btn-secondary">返回首页</button>
             <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
           </div>
@@ -519,45 +1151,46 @@
     <section id="result" class="screen">
       <div class="result-wrap card">
         <div class="result-top">
-          <div id="posterBox" class="poster-box no-image">
-            <img id="posterImage" class="poster-image" alt="类型图片" />
-            <div id="posterCaption">图片占位中，你后续补图即可。</div>
-          </div>
+          <article class="result-share-card">
+            <div class="share-card-head">
+              <span class="share-brand">GBTI 股民人格测试</span>
+            </div>
 
-          <div class="type-box">
-            <div id="resultModeKicker" class="type-kicker">你的主类型</div>
-            <div id="resultTypeName" class="type-name">DEFENDER_A（大A守望者）</div>
-            <div id="matchBadge" class="match">匹配度 77%</div>
-            <div id="resultTypeSub" class="type-subname">你更相信规则，而不是故事。</div>
-          </div>
+            <div class="share-card-main">
+              <div id="posterBox" class="poster-box no-image">
+                <img id="posterImage" class="poster-image" alt="类型图片" />
+                <div class="poster-type">
+                  <div id="resultTypeCn" class="poster-type-cn">大A守望者</div>
+                  <div id="resultTypeEn" class="poster-type-en">DEFENDER_A</div>
+                </div>
+                <div id="posterCaption">图片占位中，你后续补图即可。</div>
+              </div>
+
+              <div class="type-box">
+                <div class="share-remark-label">一句话锐评</div>
+                <div id="resultRemark" class="result-remark">备注：你更相信规则，而不是故事；更相信节奏，而不是情绪。</div>
+
+                <div class="share-highlight">
+                  <div id="resultModeKicker" class="type-kicker">你的主类型</div>
+                  <div id="matchBadge" class="match">匹配度 77%</div>
+                </div>
+
+                <div class="share-tag-wrap">
+                  <div class="share-tag-title">人格标签</div>
+                  <div id="tagList" class="chip-list share-chip-list"></div>
+                </div>
+
+                <div class="share-meta">
+                  <div id="resultTypeSub" class="type-subname">你更相信规则，而不是故事。</div>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
 
         <div class="analysis-box">
           <h3>该类型的简单解读</h3>
           <p id="resultDesc"></p>
-          <div id="resultRemark" class="result-remark">备注：你更相信规则，而不是故事；更相信节奏，而不是情绪。</div>
-        </div>
-
-        <div class="board-grid">
-          <div class="board-card">
-            <h3>人格标签</h3>
-            <div id="tagList" class="chip-list"></div>
-          </div>
-
-          <div class="board-card">
-            <h3>常见场景</h3>
-            <ul id="sceneList" class="board-list"></ul>
-          </div>
-
-          <div class="board-card">
-            <h3>常见口头禅</h3>
-            <ul id="mantraList" class="board-list"></ul>
-          </div>
-
-          <div class="board-card">
-            <h3>友情提示</h3>
-            <ul id="tipList" class="board-list"></ul>
-          </div>
         </div>
 
         <div class="reason-box">
@@ -582,13 +1215,39 @@
           </div>
         </div>
 
+        <div class="board-grid">
+          <div class="board-card">
+            <h3>常见场景</h3>
+            <ul id="sceneList" class="board-list"></ul>
+          </div>
+
+          <div class="board-card">
+            <h3>常见口头禅</h3>
+            <ul id="mantraList" class="board-list"></ul>
+          </div>
+
+          <div class="board-card">
+            <h3>友情提示</h3>
+            <ul id="tipList" class="board-list"></ul>
+          </div>
+
+          <div class="board-card">
+            <h3>晒图配文建议</h3>
+            <ul class="copy-list">
+              <li>我测出来是这个类型，你们觉得准吗？</li>
+              <li>原来我真的是“情绪盘”选手。</li>
+              <li>欢迎来挑战，看看谁更像股神。</li>
+            </ul>
+          </div>
+        </div>
+
         <div class="dim-box">
           <h3>十五维度评分</h3>
           <div id="dimList" class="dim-list"></div>
         </div>
 
         <div class="note-box">
-          <h3>友情提示</h3>
+          <h3>风险声明</h3>
           <p id="funNote">测试仅供娱乐，不构成投资建议；盈亏自负，谨慎决策。</p>
         </div>
 
@@ -600,16 +1259,16 @@
     </section>
 
     <footer class="site-footer">
-      <span>
-        页面跳转：
-        <a href="https://sbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">SBTI</a>
-        ·
-        <a href="https://gbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">GBTI</a>
-      </span>
-      <span>
-        GitHub：
-        <a href="https://github.com/wenyuanw/GBTI-test" target="_blank" rel="noopener noreferrer">github.com/wenyuanw/GBTI-test</a>
-      </span>
+      <div class="footer-copyright">© <span id="footerYear"></span> wenyuanw.</div>
+      <div class="footer-links">
+        <a href="https://sbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">SBTI 测试</a>
+        <span class="footer-sep">·</span>
+        <a href="https://gbti.wenyuanw.me" target="_blank" rel="noopener noreferrer">GBTI 测试</a>
+        <span class="footer-sep">·</span>
+        <a href="https://github.com/wenyuanw/GBTI-test" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+        <span class="footer-sep">·</span>
+        <a href="mailto:hi@wenyuanw.me">联系我们</a>
+      </div>
     </footer>
   </div>
 
@@ -1308,6 +1967,119 @@
       target.innerHTML = tags.map(tag => `<span class="chip">${tag}</span>`).join('');
     }
 
+    const heroFeaturedTypes = [
+      {
+        code: 'TEN_JQKA',
+        title: '梭哈King',
+        copy: '高进攻型交易风格代表，适合对照查看你的情绪与仓位管理偏好。'
+      },
+      {
+        code: 'DEFENDER_A',
+        title: '大A守望者',
+        copy: '偏规则和节奏的稳健风格代表，强调长期生存与风险控制。'
+      },
+      {
+        code: 'TD_MASTER',
+        title: '逃顶大师',
+        copy: '重视兑现和回撤管理，擅长在波动中优先保护账户曲线。'
+      }
+    ];
+
+    const spotlightState = {
+      index: 0,
+      timer: null,
+      switching: false,
+      transitionTimer: null
+    };
+
+    function updateHeroSpotlight() {
+      const current = heroFeaturedTypes[spotlightState.index];
+      const spotlightImage = document.getElementById('spotlightImage');
+      const spotlightTitle = document.getElementById('spotlightTitle');
+      const spotlightCopy = document.getElementById('spotlightCopy');
+      if (!spotlightImage || !spotlightTitle || !spotlightCopy) return;
+
+      const imageSrc = TYPE_IMAGES[current.code];
+      spotlightImage.src = imageSrc;
+      spotlightImage.alt = `热门人格：${current.title}`;
+      spotlightTitle.textContent = current.title;
+      spotlightCopy.textContent = current.copy;
+
+      document.querySelectorAll('.spotlight-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === spotlightState.index);
+      });
+    }
+
+    function setHeroSpotlight(index, restartAuto = true) {
+      const total = heroFeaturedTypes.length;
+      const nextIndex = (index + total) % total;
+      const heroSpotlight = document.getElementById('heroSpotlight');
+
+      if (nextIndex === spotlightState.index) {
+        if (restartAuto) startHeroSpotlightAuto();
+        return;
+      }
+
+      if (!heroSpotlight) {
+        spotlightState.index = nextIndex;
+        updateHeroSpotlight();
+        if (restartAuto) startHeroSpotlightAuto();
+        return;
+      }
+
+      if (spotlightState.switching) {
+        return;
+      }
+
+      spotlightState.switching = true;
+      heroSpotlight.classList.add('is-switching');
+
+      if (spotlightState.transitionTimer) {
+        clearTimeout(spotlightState.transitionTimer);
+      }
+
+      spotlightState.transitionTimer = setTimeout(() => {
+        spotlightState.index = nextIndex;
+        updateHeroSpotlight();
+        heroSpotlight.classList.remove('is-switching');
+        spotlightState.switching = false;
+      }, 150);
+
+      if (restartAuto) startHeroSpotlightAuto();
+    }
+
+    function startHeroSpotlightAuto() {
+      if (spotlightState.timer) {
+        clearInterval(spotlightState.timer);
+      }
+      spotlightState.timer = setInterval(() => {
+        setHeroSpotlight(spotlightState.index + 1, false);
+      }, 4200);
+    }
+
+    function initHeroSpotlight() {
+      const spotlightDots = document.getElementById('spotlightDots');
+      if (!spotlightDots) return;
+
+      spotlightDots.innerHTML = heroFeaturedTypes.map((_, index) => `
+        <button
+          class="spotlight-dot ${index === 0 ? 'active' : ''}"
+          type="button"
+          data-index="${index}"
+          aria-label="切换到第 ${index + 1} 个热门人格"
+        ></button>
+      `).join('');
+
+      spotlightDots.querySelectorAll('.spotlight-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          setHeroSpotlight(Number(dot.dataset.index));
+        });
+      });
+
+      updateHeroSpotlight();
+      startHeroSpotlightAuto();
+    }
+
     const app = {
       shuffledQuestions: [],
       answers: {}
@@ -1355,6 +2127,14 @@
       return `${dimensionMeta[q.dim].name} · ${dimensionMeta[q.dim].model}`;
     }
 
+    function syncOptionSelectedStyle(questionId, selectedValue) {
+      questionList.querySelectorAll(`input[name="${questionId}"]`).forEach(input => {
+        const option = input.closest('.option');
+        if (!option) return;
+        option.classList.toggle('selected', Number(input.value) === Number(selectedValue));
+      });
+    }
+
     function renderQuestions() {
       const visibleQuestions = getVisibleQuestions();
       questionList.innerHTML = '';
@@ -1371,9 +2151,11 @@
           <div class="options">
             ${q.options.map((opt, i) => {
               const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
-              const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+              const isSelected = app.answers[q.id] === opt.value;
+              const checked = isSelected ? 'checked' : '';
+              const selectedClass = isSelected ? ' selected' : '';
               return `
-                <label class="option">
+                <label class="option${selectedClass}">
                   <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
                   <strong>${code}</strong>
                   <div>${opt.label}</div>
@@ -1389,6 +2171,7 @@
         input.addEventListener('change', (e) => {
           const { name, value } = e.target;
           app.answers[name] = Number(value);
+          syncOptionSelectedStyle(name, value);
 
           if (name === 'margin_gate_q1') {
             if (Number(value) !== 3) {
@@ -1486,7 +2269,7 @@
         finalType = TYPE_LIBRARY.TEN_JQKA;
         modeKicker = '隐藏人格已激活';
         badge = '匹配度 100% · 梭哈冲动已接管';
-        sub = '检测到高强度梭哈倾向，系统优先给出 TEN_JQKA 画像。';
+        sub = '你在关键题中表现出极强进攻倾向，本次结果优先归档为「梭哈 King」。';
         special = true;
       } else if (bestNormal.similarity < 55) {
         finalType = TYPE_LIBRARY.WATCHER;
@@ -1532,7 +2315,8 @@
       const profile = getTypeProfile(type);
 
       document.getElementById('resultModeKicker').textContent = result.modeKicker;
-      document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+      document.getElementById('resultTypeCn').textContent = type.cn;
+      document.getElementById('resultTypeEn').textContent = type.code;
       document.getElementById('matchBadge').textContent = result.badge;
       document.getElementById('resultTypeSub').textContent = result.sub;
       document.getElementById('resultDesc').textContent = type.desc;
@@ -1588,6 +2372,13 @@
       renderQuestions();
       showScreen('test');
     }
+
+    const footerYear = document.getElementById('footerYear');
+    if (footerYear) {
+      footerYear.textContent = new Date().getFullYear();
+    }
+
+    initHeroSpotlight();
 
     document.getElementById('startBtn').addEventListener('click', startTest);
     document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
